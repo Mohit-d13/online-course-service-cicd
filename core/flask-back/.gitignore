@@ -1,0 +1,11 @@
+# python cache
+__pycache__/
+
+# docker ignore file
+.dockerignore
+
+# virtual environment
+.venv/
+
+# env file
+.env.backend

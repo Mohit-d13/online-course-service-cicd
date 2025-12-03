@@ -1,0 +1,8 @@
+# node modulas
+node_modules
+
+# env file
+.env.frontend
+
+# docker ignore file
+.dockerignore
