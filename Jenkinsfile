@@ -10,48 +10,34 @@ pipeline {
                     file(credentialsId: 'backend-secret', variable: 'EXPRESS_ENV_FILE')
                 ]) {
                     sh '''
-                        cp $FLASK_ENV_FILE core/flask-back/.env.frontend
-                        cp $EXPRESS_ENV_FILE core/express-front/.env.backend
+                        cp $FLASK_ENV_FILE core/flask-back/.env.backend
+                        cp $EXPRESS_ENV_FILE core/express-front/.env.frontend
                     '''
                 }
             }
         }
 
-        stage('Build Flask Backend') {
+        stage('Build & Deploy Flask Backend') {
             steps {
                 dir('core/flask-back') {
                     sh '''
                         python3 -m venv .venv
-                        source .venv/bin/activate
-                        pip install -r requirements.txt
+                        .venv/bin/pip install -r requirements.txt
+                        pm2 start .venv/bin/python3 --name flask-app -- -m gunicorn "app:app" -b 0.0.0.0:5000
                     '''
                 }
             }
         }
 
-        stage('Build Express Frontend') {
+        stage('Build & Deploy Express Frontend') {
             steps {
                 dir('core/express-front') {
                     sh '''
                         npm install
                         npm run build || echo "Build skipped"
+                        pm2 start index.js
                     '''
                 }
-            }
-        }
-
-        stage('Deploy to EC2') {
-            steps {
-                dir('core/'){
-                    sh '''
-                        # Restart apps using PM2
-                        cd core/
-                        pm2 stop all || true
-                        pm2 start ecosystem.config.js
-                        pm2 save
-                        EOF
-                    '''
-                }        
             }
         }
     }
