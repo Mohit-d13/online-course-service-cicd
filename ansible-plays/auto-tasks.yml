@@ -1,0 +1,8 @@
+---
+- name: Setup Automated tasks for aws EC2 instance
+  hosts: webserver1
+  become: true
+
+  roles:
+    - setup-jenkins
+    - install-project-dep

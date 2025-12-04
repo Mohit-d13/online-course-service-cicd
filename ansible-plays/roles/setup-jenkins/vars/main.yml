@@ -1,0 +1,6 @@
+---
+# vars file for setup-jenkins
+java_dep:
+  - fontconfig
+  - openjdk-21-jre
+

@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Pipeline-Build') {
+            environment {
+                NAME = "Mohit Damle"
+            }
+            steps {
+                sh """
+                echo 'Building pipeline code ${BUILD_ID}'
+                echo 'My Name is ${NAME}'
+                """
+            }
+        }
+        stage('Pipeline-Test') {
+            steps {
+                echo 'Testing pipeline code'
+            }
+        }
+        stage('Pipeline-deploy') {
+            steps {
+                echo 'Deploy pipeline code'
+            }
+        }
+        stage('Pipeline-deploy-prod') {
+            steps {
+                echo 'Deploying pipeline code on Production Environment'
+            }
+        }
+    }
+}

@@ -1,0 +1,44 @@
+---
+# tasks file for installing projects dependencies packages
+- name: Install python and some required packages for project
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items: "{{ project_pkg }}"
+
+- name: Add Node Source repository
+  ansible.builtin.shell:
+    cmd: curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+  args:
+    creates: /etc/apt/source.list.d/nodesource.list
+
+- name: Install Node js
+  ansible.builtin.apt:
+    name: nodejs
+    state: present
+
+- name: Verify Node installation
+  ansible.builtin.shell: node --version
+  register: node_output
+  changed_when: false
+
+- name: Print Node js version
+  ansible.builtin.debug:
+    var: node_output.stdout
+
+- name: Install pm2 globally using npm module
+  community.general.npm:
+    name: pm2
+    global: yes
+    state: present
+
+- name: Verify pm2 installation
+  ansible.builtin.shell: pm2 -v
+  register: pm2_output
+  changed_when: false
+
+- name: Print pm2 version
+  ansible.builtin.debug:
+    var: pm2_output.stdout
