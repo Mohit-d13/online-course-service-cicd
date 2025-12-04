@@ -33,6 +33,3 @@ def submit():
         return jsonify({"message": "Course enrollment form successfully submitted"}), 200
 
     return jsonify({"error": "No data received"}), 400
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
