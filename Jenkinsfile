@@ -36,6 +36,8 @@ pipeline {
                         npm install
                         npm run build || echo "Build skipped"
                         pm2 start index.js
+                        pm2 logs flask-app --lines 50
+                        pm2 logs index --lines 50
                     '''
                 }
             }
