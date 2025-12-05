@@ -1,6 +1,6 @@
 ---
 - name: Setup Automated tasks for aws EC2 instance
-  hosts: webserver1
+  hosts: app_server
   become: true
 
   roles:

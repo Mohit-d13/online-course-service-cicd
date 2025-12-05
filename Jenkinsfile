@@ -30,7 +30,7 @@ pipeline {
                         pm2 stop flask-app || true
                         pm2 delete flask-app || true
 
-                        pm2 start .venv/bin/python3 --name flask-app -- -m gunicorn "app:app" -b 0.0.0.0:5000
+                        pm2 start .venv/bin/gunicorn --name flask-app --cwd $(pwd) -- "app:app" -b 0.0.0.0:5000
                     '''
                 }
             }
@@ -40,10 +40,13 @@ pipeline {
             steps {
                 dir('core/express-front') {
                     sh '''
-                        npm install
+                        npm ci || exit 1
+
                         pm2 stop express-app || true
                         pm2 delete express-app || true
-                        pm2 start index.js --name express-app
+
+                        # Start via npm so PM2 runs inside this directory with correct context
+                        pm2 start npm --name express-app -- start --cwd $(pwd)
                     '''
                 }
             }
