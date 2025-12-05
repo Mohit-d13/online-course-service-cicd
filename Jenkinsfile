@@ -12,7 +12,7 @@ pipeline {
                     sh '''
                         chmod u+w core/flask-back/.env.backend || true
                         chmod u+w core/express-front/.env.frontend || true
-                        
+
                         cp $FLASK_ENV_FILE core/flask-back/.env.backend
                         cp $EXPRESS_ENV_FILE core/express-front/.env.frontend
                     '''
@@ -42,11 +42,8 @@ pipeline {
                 dir('core/express-front') {
                     sh '''
                         npm install
-                        npm run build
-
                         pm2 stop express-app || true
                         pm2 delete express-app || true
-
                         pm2 start index.js --name express-app
                     '''
                 }
