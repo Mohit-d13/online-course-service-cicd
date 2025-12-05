@@ -52,8 +52,8 @@ pipeline {
         stage('Show Logs') {
             steps {
                 sh '''
-                    pm2 logs flask-app --lines 50
-                    pm2 logs express-app --lines 50
+                    pm2 logs flask-app --lines 10
+                    pm2 logs express-app --lines 10
                 '''
             }
         }
