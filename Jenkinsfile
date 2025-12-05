@@ -10,6 +10,9 @@ pipeline {
                     file(credentialsId: 'frontend-secret', variable: 'EXPRESS_ENV_FILE')
                 ]) {
                     sh '''
+                        chmod u+w core/flask-back/.env.backend || true
+                        chmod u+w core/express-front/.env.frontend || true
+                        
                         cp $FLASK_ENV_FILE core/flask-back/.env.backend
                         cp $EXPRESS_ENV_FILE core/express-front/.env.frontend
                     '''
