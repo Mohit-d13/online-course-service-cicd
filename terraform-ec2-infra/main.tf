@@ -35,5 +35,5 @@ resource "local_file" "create_inventory" {
   [app_server]
   ${aws_instance.app_server.public_ip} ansible_user=ubuntu
   EOF
-  filename   = "/home/mohit-d13/Projects/course-platform/ansible-plays/inventory.ini"
+  filename   = "/home/mohit-d13/Projects/online-course-service-cicd/ansible-plays/inventory.ini"
 }
