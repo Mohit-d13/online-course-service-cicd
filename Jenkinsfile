@@ -30,8 +30,7 @@ pipeline {
                         pm2 stop flask-app || true
                         pm2 delete flask-app || true
 
-                        pm2 start .venv/bin/gunicorn --name flask-app -- \
-                            "app:app" -b 0.0.0.0:5000
+                        pm2 start .venv/bin/python3 --name flask-app -- -m gunicorn "app:app" -b 0.0.0.0:5000
                     '''
                 }
             }
