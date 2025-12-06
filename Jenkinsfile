@@ -46,6 +46,7 @@ pipeline {
             steps {
                  dir('core') {
                     sh '''
+                        sudo -u ubuntu bash -c '
                         export PM2_HOME=/home/ubuntu/.pm2
 
                         set -a
