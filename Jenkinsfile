@@ -57,6 +57,7 @@ pipeline {
                         pm2 delete all || true
                         pm2 start ecosystem.config.js
                         pm2 save
+                        '
                     '''
                 }
             }
