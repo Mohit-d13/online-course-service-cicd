@@ -13,40 +13,46 @@ pipeline {
                         cp $FLASK_ENV_FILE core/flask-back/.env.backend
                         cp $EXPRESS_ENV_FILE core/express-front/.env.frontend
 
-                        chmod 644 core/flask-back/.env.backend || true
-                        chmod 644 core/express-front/.env.frontend || true
+                        chmod 600 core/flask-back/.env.backend
+                        chmod 600 core/express-front/.env.frontend
                     '''
                 }
             }
         }
 
-        stage('Build & Deploy Flask Backend') {
+        stage('Build Flask Backend') {
             steps {
                 dir('core/flask-back') {
                     sh '''
                         python3 -m venv .venv
+                        .venv/bin/pip install --upgrade pip
                         .venv/bin/pip install -r requirements.txt
-
-                        pm2 stop flask-app || true
-                        pm2 delete flask-app || true
-
-                        pm2 start .venv/bin/gunicorn --name flask-app --cwd $(pwd) --interpreter none -- --bind 0.0.0.0:5000 app:app
                     '''
                 }
             }
         }
 
-        stage('Build & Deploy Express Frontend') {
+        stage('Build Express Frontend') {
             steps {
                 dir('core/express-front') {
                     sh '''
-                        npm ci || exit 1
+                        npm ci
+                    '''
+                }
+            }
+        }
 
+        stage('Deploy with PM2') {
+            steps {
+                dir('core') {
+                    sh '''
+                        pm2 stop flask-app || true
+                        pm2 delete flask-app || true
                         pm2 stop express-app || true
                         pm2 delete express-app || true
 
-                        # Start via npm so PM2 runs inside this directory with correct context
-                        pm2 start npm --name express-app -- start --cwd $(pwd)
+                        pm2 start ecosystem.config.js
+                        pm2 save
                     '''
                 }
             }
