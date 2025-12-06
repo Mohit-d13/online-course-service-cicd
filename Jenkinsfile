@@ -48,8 +48,8 @@ pipeline {
                     sh '''
                         # Load Flask environment vars
                         set -a
-                        source flask-back/.env.backend
-                        source express-front/.env.frontend
+                        . flask-back/.env.backend
+                        . express-front/.env.frontend
                         set +a
 
                         pm2 stop flask-app || true
