@@ -44,8 +44,14 @@ pipeline {
 
         stage('Deploy with PM2') {
             steps {
-                dir('core') {
+                 dir('core') {
                     sh '''
+                        # Load Flask environment vars
+                        set -a
+                        source flask-back/.env.backend
+                        source express-front/.env.frontend
+                        set +a
+
                         pm2 stop flask-app || true
                         pm2 delete flask-app || true
                         pm2 stop express-app || true
