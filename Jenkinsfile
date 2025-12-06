@@ -46,17 +46,14 @@ pipeline {
             steps {
                  dir('core') {
                     sh '''
-                        # Load Flask environment vars
+                        export PM2_HOME=/home/ubuntu/.pm2
+
                         set -a
-                        . flask-back/.env.backend
-                        . express-front/.env.frontend
+                        . $(pwd)/flask-back/.env.backend
+                        . $(pwd)/express-front/.env.frontend
                         set +a
 
-                        pm2 stop flask-app || true
-                        pm2 delete flask-app || true
-                        pm2 stop express-app || true
-                        pm2 delete express-app || true
-
+                        pm2 delete all || true
                         pm2 start ecosystem.config.js
                         pm2 save
                     '''
