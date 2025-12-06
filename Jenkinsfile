@@ -30,7 +30,7 @@ pipeline {
                         pm2 stop flask-app || true
                         pm2 delete flask-app || true
 
-                        pm2 start .venv/bin/gunicorn --name flask-app --cwd $(pwd) -- "app:app" -b 0.0.0.0:5000
+                        pm2 start .venv/bin/gunicorn --name flask-app --cwd $(pwd) --interpreter none -- --bind 0.0.0.0:5000 app:app
                     '''
                 }
             }
@@ -50,6 +50,15 @@ pipeline {
                     '''
                 }
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Deployment successful!'
+        }
+        failure {
+            echo 'Deployment failed!'
         }
     }
 }
