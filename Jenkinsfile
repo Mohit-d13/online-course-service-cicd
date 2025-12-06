@@ -13,8 +13,8 @@ pipeline {
                         cp $FLASK_ENV_FILE core/flask-back/.env.backend
                         cp $EXPRESS_ENV_FILE core/express-front/.env.frontend
 
-                        chmod u+rw,g+r,o+r core/flask-back/.env.backend || true
-                        chmod u+rw,g+r,o+r core/express-front/.env.frontend || true
+                        chmod 644 core/flask-back/.env.backend || true
+                        chmod 644 core/express-front/.env.frontend || true
                     '''
                 }
             }
